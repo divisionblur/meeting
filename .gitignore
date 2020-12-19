@@ -1,0 +1,91 @@
+# Created by .ignore support plugin (hsz.mobi)
+### CMake template
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+### Composer template
+composer.phar
+/vendor/
+
+# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
+# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# composer.lock
+
+### CodeSniffer template
+# gitignore for the PHP Codesniffer framework
+# website: https://github.com/squizlabs/PHP_CodeSniffer
+#
+# Recommended template: PHP.gitignore
+
+/wpcs/*
+
+### CodeIgniter template
+*/config/development
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+
+#codeigniter 3
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+/vendor/
+
+### Concrete5 template
+# ignore the error log and .htaccess and others
+error_log
+.htaccess
+
+# concrete5 5.6 specific
+
+config/site.php
+files/cache/*
+files/tmp/*
+
+# concrete5 5.7 specific
+
+# ignore everything but the index.html
+/application/files/*
+!/application/files/index.html
+
+# ignore updates folder
+/updates/*
+
+# ignore sitemap.xml
+/sitemap.xml
+
+### CommonLisp template
+*.FASL
+*.fasl
+*.lisp-temp
+*.dfsl
+*.pfsl
+*.d64fsl
+*.p64fsl
+*.lx64fsl
+*.lx32fsl
+*.dx64fsl
+*.dx32fsl
+*.fx64fsl
+*.fx32fsl
+*.sx64fsl
+*.sx32fsl
+*.wx64fsl
+*.wx32fsl
+

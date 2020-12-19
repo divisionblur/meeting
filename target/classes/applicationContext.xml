@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--使用默认过滤器  包扫描排除Controller注解-->
+    <context:component-scan base-package="org.javaboy.meeting" use-default-filters="true">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--MyBatis 配置-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="url" value="${db.url}"/>
+        <!--驱动可以不指定可以根据URL推断出来-->
+    </bean>
+
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="org.javaboy.meeting.model"/>
+        <property name="mapperLocations">
+            <value>
+                classpath*:org/javaboy/meeting/mapper/*.xml
+            </value>
+        </property>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+        <!--sql映射文件和接口放在同一个包下-->
+        <property name="basePackage" value="org.javaboy.meeting.mapper"/>
+    </bean>
+
+
+
+    <!--事务配置最终连接都是由连接池来管理  所以要注入连接池-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--基于标签的事务配置-->
+    <!--注意点选名称空间不要选错了tx结尾才行-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*"/>
+            <tx:method name="insert*"/>
+            <tx:method name="update*"/>
+            <tx:method name="delete*"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+    <!--切点+额外功能，事务往Service加-->
+    <aop:config>
+        <aop:pointcut id="pc1" expression="execution(* org.javaboy.meeting.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pc1"/>
+    </aop:config>
+</beans>
